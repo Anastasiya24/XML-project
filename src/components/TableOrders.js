@@ -8,25 +8,9 @@ import convert from "xml-js";
 
 const gridColumn = [
   { name: "shop", title: "Магазин" },
-  { name: "goods", title: "Товары" },
+  { name: "goods", title: "Товар" },
   { name: "price", title: "Общая сумма" },
   { name: "date", title: "Дата" }
-];
-
-// THIS!
-const gridRows = [
-  {
-    shop: "г.Могилёв, ул.Каштановая, 43а",
-    goods: ["Молоко", "Шаурма"],
-    price: 14.7,
-    date: "18.03.2019"
-  },
-  {
-    shop: "г.Минск, ул.Подгорная, 12",
-    goods: ["Молоко", "Шаурма"],
-    price: 74.5,
-    date: "19.03.2019"
-  }
 ];
 
 class TableOrders extends Component {
@@ -39,21 +23,27 @@ class TableOrders extends Component {
     var reader = new FileReader();
     reader.onload = () => {
       let u = reader.result.substring(0, 2000);
-      console.log(u);
       var result = convert.xml2js(u, {
         compact: true,
         spaces: 4
       });
-      console.log("result: ", result);
+      let a = result.data.orders.map(el => {
+        let date = el.date._text;
+        let price = el.price._text;
+        let shop = el.shop._text;
+        let goods = el.goods._text;
+        return {
+          date, price, shop, goods
+        }
+      });
       this.setState({
-        file: result.data.orders
+        file: a
       });
     };
     reader.readAsText(input.files[0]);
   };
 
   render() {
-    console.log("this.state.file: ", this.state.file);
     return (
       <div>
         <input
@@ -62,11 +52,10 @@ class TableOrders extends Component {
           onChange={event => this.openFile(event)}
         />
         {this.state.file && (
-        //   <Grid columns={gridColumn} rows={gridRows}>
-        //     <Table />
-        //     <TableHeaderRow />
-        //   </Grid>
-            // {this.state.file.map(el )}
+          <Grid columns={gridColumn} rows={this.state.file}>
+            <Table />
+            <TableHeaderRow />
+          </Grid>
         )}
       </div>
     );

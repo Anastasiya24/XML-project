@@ -2,7 +2,6 @@
 <data>
 	<orders>
 		<shop>г.Могилёв, ул.Каштановая, 43а</shop>
-		<goods>Молоко</goods>
 		<goods>Шаурма</goods>
 		<price>14.7</price>
 		<date>18.03.2019</date>
@@ -10,7 +9,6 @@
 	<orders>
 		<shop>г.Минск, ул.Подгорная, 12</shop>
 		<goods>Молоко</goods>
-		<goods>Шаурма</goods>
 		<price>74.5</price>
 		<date>19.03.2019</date>
 	</orders>

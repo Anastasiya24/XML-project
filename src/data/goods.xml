@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<data>
+		<view>Продовольственные</view>
+		<list>
+			<category>Продукты питания</category>
+			<goods>
+				<name>Молоко</name>
+				<description>Жидкое, свежее</description>
+				<price>0.7</price>
+				<count>100</count>
+			</goods>
+			<goods>
+				<name>Шашлык &quot;По-братски&quot;</name>
+				<description>Сочный, что пальчики съешь</description>
+				<price>0.7</price>
+				<count>457</count>
+			</goods>
+			<goods>
+				<name>Шаурма</name>
+				<description>Аппетитная</description>
+				<price>5.5</price>
+				<count>10006</count>
+			</goods>
+		</list>
+		<list>
+			<category>Бытовая химия</category>
+			<goods>
+				<name>Крем &quot;Ромашка&quot;</name>
+				<description>Крем для рук</description>
+				<price>1.8</price>
+				<count>24</count>
+			</goods>
+			<goods>
+				<name>Крапивная шампунь</name>
+				<description>Шампунь для придания густоты</description>
+				<price>3.3</price>
+				<count>700</count>
+			</goods>
+		</list>
+	</data>
+	
