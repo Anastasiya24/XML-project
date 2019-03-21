@@ -15,13 +15,10 @@ class TableGoods extends Component {
         return (
             <React.Fragment>
                 Сортировать
-                <Button variant="contained" style={{marginLeft: '10px'}}>
-                    по имени
-                </Button>
-                <Button variant="contained" style={{marginLeft: '10px'}}>
+                <Button variant="contained" style={{ marginLeft: '10px' }} onClick={() => this.props.sortToPrice()}>
                     по цене
                 </Button>
-                <Button variant="contained" style={{marginLeft: '10px'}}>
+                <Button variant="contained" style={{ marginLeft: '10px' }} onClick={() => this.props.sortToCount()}>
                     по количеству
                 </Button>
                 <Grid

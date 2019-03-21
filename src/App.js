@@ -6,26 +6,6 @@ import TableGoods from "./components/TableGoods";
 import PopupForCreateOrder from "./components/PopupForCreateOrder";
 import PopupForShowOrders from "./components/PopupForShowOrders";
 
-// THIS!
-const goodsList = [
-  {
-    view: 'Продовольственные', list: [{
-      category: 'Продукты питания', goods: [
-        { name: 'Молоко', description: 'Жидкое, свежее', price: 0.7, count: 100 },
-        { name: 'Шашлык "По-братски"', description: 'Сочный, что пальчики съешь', price: 0.7, count: 457 },
-        { name: 'Шаурма', description: 'Аппетитная', price: 5.5, count: 10006 }
-      ]
-    },
-    {
-      category: 'Бытовая химия', goods: [
-        { name: 'Крем "Ромашка"', description: 'Крем для рук', price: 1.8, count: 24 },
-        { name: 'Крапивная шампунь', description: 'Шампунь для придания густоты', price: 3.3, count: 700 },
-      ]
-    },
-    ]
-  }
-]
-
 class App extends Component {
   state = {
     openPopupForCreateOrder: false,
@@ -63,7 +43,7 @@ class App extends Component {
       };
 
       this.setState({
-        file: a
+        file: [a]
       });
     };
     reader.readAsText(input.files[0]);
@@ -93,7 +73,63 @@ class App extends Component {
     })
   };
 
+
+  sortToPrice = () => {
+    const goodsList = this.state.file;
+    let finalFile = goodsList.map(el => {
+      let finalGoods = el.list.map(list => {
+        let goods = list.goods;
+        let gMin = 0;
+        for (let i = 0; i < goods.length; i++) {
+          let mm;
+          if (goods[i].price < goods[gMin].price) {
+            mm = goods[i];
+            goods[i] = goods[gMin];
+            goods[gMin] = mm;
+            gMin = i
+          }
+        }
+        return { category: list.category, goods };
+      })
+
+      return { list: finalGoods, view: el.view };
+    })
+
+    this.setState({
+      file: finalFile
+    });
+    console.log('sortToPrice: ', finalFile);
+  };
+
+  sortToCount = () => {
+    const goodsList = this.state.file;
+    let finalFile = goodsList.map(el => {
+      let finalGoods = el.list.map(list => {
+        let goods = list.goods;
+        let gMin = 0;
+        for (let i = 0; i < goods.length; i++) {
+          let mm;
+          if (goods[i].count < goods[gMin].count) {
+            mm = goods[i];
+            goods[i] = goods[gMin];
+            goods[gMin] = mm;
+            gMin = i
+          }
+        }
+        return { category: list.category, goods };
+      })
+
+      return { list: finalGoods, view: el.view };
+    })
+
+    this.setState({
+      file: finalFile
+    });
+    console.log('sortToCount: ', finalFile);
+  }
+
   render() {
+    const goodsList = this.state.file;
     return (
       <div style={{ marginLeft: '20px' }}>
         <input
@@ -101,8 +137,8 @@ class App extends Component {
           accept="text/plain"
           onChange={event => this.openFile(event)}
         />
-        {this.state.openPopupForCreateOrder &&
-          <PopupForCreateOrder handleClose={this.closePopupForCreateOrder} />}
+        {this.state.openPopupForCreateOrder && this.state.file &&
+          <PopupForCreateOrder handleClose={this.closePopupForCreateOrder} onlyGoodsList={goodsList.map(el => { let e = el.list.map(list => { return list.goods }); return e })} />}
         {this.state.openPopupForShowOrder &&
           <PopupForShowOrders handleClose={this.closePopupForShowOrder} />}
         <h1>Склад</h1>
@@ -120,7 +156,7 @@ class App extends Component {
                 {el.list.map(list => (
                   <div>
                     <h3>Категория: {list.category}</h3>
-                    <TableGoods gridRows={list.goods} />
+                    <TableGoods gridRows={list.goods} sortToPrice={this.sortToPrice} sortToCount={this.sortToCount} />
                   </div>
                 ))}
               </div>

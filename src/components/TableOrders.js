@@ -36,6 +36,19 @@ class TableOrders extends Component {
           date, price, shop, goods
         }
       });
+      for (let i = 0; i < 10; i++) {
+        if (localStorage.getItem(`${i}shop`)) {
+          let result = {
+            shop: localStorage.getItem(`${i}shop`),
+            date: localStorage.getItem(`${i}day`),
+            goods: localStorage.getItem(`${i}good`),
+            price: localStorage.getItem(`${i}price`),
+          }
+          a.push(result)
+        }
+      };
+      console.log('a: ', a);
+
       this.setState({
         file: a
       });

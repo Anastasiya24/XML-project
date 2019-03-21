@@ -72,20 +72,39 @@ const shops = ['г.Могилёв, ул.Каштановая, 43а', 'г.Мин�
 class PopupForCreateOrder extends React.Component {
     state = {
         shop: '',
-        day: new Date()
+        day: new Date(),
+        good: "",
+        count: null
     };
 
     handleChange = name => event => {
         this.setState({ [name]: event.target.value });
     };
 
-    saveOrder = () => {
+    add = (el, newListGoogs) => {
+        localStorage.setItem(`${newListGoogs.length + 1}shop`, el.shop);
+        localStorage.setItem(`${newListGoogs.length + 1}day`, el.day);
+        localStorage.setItem(`${newListGoogs.length + 1}good`, el.goods);
+        localStorage.setItem(`${newListGoogs.length + 1}price`, el.price);
+    };
+
+    saveOrder = (newListGoogs) => {
         this.props.handleClose();
-        console.log(this.state);
-    }
+        let result = {
+            shop: this.state.shop,
+            goods: this.state.good.name,
+            day: this.state.day,
+            price: +(this.state.count) * (+this.state.good.price),
+        };
+        this.add(result, newListGoogs);
+    };
 
     render() {
-        const { classes } = this.props;
+        const { classes, onlyGoodsList } = this.props;
+        let newListGoogs = [];
+        let un = onlyGoodsList[0];
+        un.map(el => el.map(g => newListGoogs.push(g)))
+
         return (
             <div>
                 <Dialog
@@ -96,7 +115,7 @@ class PopupForCreateOrder extends React.Component {
                     <DialogTitle id="customized-dialog-title" onClose={this.props.handleClose}>
                         Создать заказ
                     </DialogTitle>
-                    <DialogContent>
+                    {newListGoogs && <DialogContent>
                         <TextField
                             select
                             label="Магазин"
@@ -124,10 +143,37 @@ class PopupForCreateOrder extends React.Component {
                             onChange={this.handleChange('day')}
                             className={classes.textField}
                         />
-
-                    </DialogContent>
+                        <br />
+                        <TextField
+                            select
+                            label="Товар"
+                            className={classes.textField}
+                            value={this.state.good}
+                            onChange={this.handleChange('good')}
+                            SelectProps={{
+                                MenuProps: {
+                                    className: classes.menu,
+                                },
+                            }}
+                        >
+                            {newListGoogs.map(el => (
+                                <MenuItem key={el.good} value={el}>
+                                    {el.name}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                        <br />
+                        <TextField
+                            name="count"
+                            label="Количество"
+                            type="number"
+                            value={this.state.count}
+                            onChange={this.handleChange('count')}
+                            className={classes.textField}
+                        />
+                    </DialogContent>}
                     <DialogActions>
-                        <Button onClick={() => this.saveOrder()} variant="contained" color="primary">
+                        <Button onClick={() => this.saveOrder(newListGoogs)} variant="contained" color="primary">
                             Сохранить заказ
                         </Button>
                     </DialogActions>
